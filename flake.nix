@@ -15,6 +15,27 @@
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
     {
+      packages = forAllSystems (pkgs: {
+        default = pkgs.python3Packages.buildPythonApplication {
+          pname = "rss-to-epub";
+          version = "0.1.0";
+          src = ./.;
+          pyproject = true;
+
+          build-system = [ pkgs.python3Packages.hatchling ];
+
+          dependencies = with pkgs.python3Packages; [
+            feedparser
+            readability-lxml
+            requests
+          ];
+
+          nativeCheckInputs = [ pkgs.pandoc ];
+
+          makeWrapperArgs = [ "--prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.pandoc ]}" ];
+        };
+      });
+
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShell {
           packages = [
