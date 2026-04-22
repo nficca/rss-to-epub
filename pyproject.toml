@@ -1,0 +1,13 @@
+[project]
+name = "rss-to-epub"
+version = "0.1.0"
+description = "Convert RSS feeds to EPUBs with one book per feed and articles as chapters"
+requires-python = ">=3.12"
+dependencies = [
+    "feedparser",
+    "readability-lxml",
+    "requests",
+]
+
+[project.scripts]
+rss-to-epub = "rss_to_epub.cli:main"
