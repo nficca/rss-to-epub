@@ -12,7 +12,7 @@ class Article:
 
 
 def fetch_feed(url: str) -> tuple[str, list[Article]]:
-    """Fetch an RSS feed and return (feed_title, articles) sorted newest first."""
+    """Fetch an RSS feed and return (feed_title, articles) sorted oldest first."""
     feed = feedparser.parse(url)
     title = feed.feed.get("title", "Untitled Feed")
 
@@ -23,7 +23,7 @@ def fetch_feed(url: str) -> tuple[str, list[Article]]:
         html = _clean_html(html, article_title)
         articles.append(Article(title=article_title, html=html))
 
-    return title, articles
+    return title, list(reversed(articles))
 
 
 def _extract_content(entry) -> str:
